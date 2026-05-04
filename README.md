@@ -96,6 +96,29 @@ export JINA_API_KEY="your-jina-api-key"
 export OPENAI_API_BASE="your api base"  # Custom API endpoint
 ```
 
+### ✅ Optional Preflight
+
+Before running model or web-scraping calls, validate dependencies, environment
+variables, JSONL schema, and output paths:
+
+```bash
+python preflight_reporteval.py \
+  --task score \
+  --inputpath data/report/qwen-reports.jsonl \
+  --outputpath exp/score_results \
+  --output-json exp/preflight_score.json \
+  --output-md exp/preflight_score.md
+
+python preflight_reporteval.py \
+  --task fact \
+  --inputpath example/judge_fact_result/example_fact_judge_input.jsonl \
+  --outputpath example/judge_fact_result/example_fact_judge_output.jsonl \
+  --provider jina
+```
+
+Use `--strict` in CI to fail when blockers are found. The preflight does not
+call LLMs, Firecrawl, or Jina.
+
 ---
 
 ## 📊 Data Formats
@@ -142,7 +165,7 @@ export OPENAI_API_BASE="your api base"  # Custom API endpoint
 ## 🚀 Quick Start
 
 ### 📋 Prepare Data
-- **Quality evaluation**: Use `data/topic/high_quality_topics.jsonl` or your own JSONL
+- **Quality evaluation**: Use `data/report/qwen-reports.jsonl` or your own JSONL with both `topic` and `report` fields
 - **Fact checking**: Refer to `example/judge_fact_result/example_fact_judge_input.jsonl`
 
 ### 💻 Examples
@@ -151,18 +174,18 @@ export OPENAI_API_BASE="your api base"  # Custom API endpoint
 ```bash
 # Basic run
 python judge_score.py \
-  --inputpath data/topic/high_quality_topics.jsonl \
+  --inputpath data/report/qwen-reports.jsonl \
   --outputpath exp/score_results
 
 # Resume from checkpoint
 python judge_score.py \
-  --inputpath data/topic/high_quality_topics.jsonl \
+  --inputpath data/report/qwen-reports.jsonl \
   --outputpath exp/score_results \
   --resume
 
 # Clear checkpoint and restart
 python judge_score.py \
-  --inputpath data/topic/high_quality_topics.jsonl \
+  --inputpath data/report/qwen-reports.jsonl \
   --outputpath exp/score_results \
   --clear_checkpoint
 ```

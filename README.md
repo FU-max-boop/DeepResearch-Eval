@@ -119,6 +119,25 @@ python preflight_reporteval.py \
 Use `--strict` in CI to fail when blockers are found. The preflight does not
 call LLMs, Firecrawl, or Jina.
 
+### 📎 Offline Corpus Audit
+
+To reproduce the static part of the released Qwen report corpus and triage
+reports before paid LLM judging, run the offline audit:
+
+```bash
+python analyze_report_corpus.py \
+  --inputpath data/report/qwen-reports.jsonl \
+  --topicpath data/topic/high_quality_topics.jsonl \
+  --output-dir example/report_corpus_audit
+```
+
+The audit computes report structure, citation/reference consistency, section
+lengths, and deterministic cross-section redundancy-risk proxies. It does not
+call LLMs, Jina, Firecrawl, or any external service.
+
+The generated CSV, JSON, and Markdown summaries are written under
+`example/report_corpus_audit/`.
+
 ---
 
 ## 📊 Data Formats
